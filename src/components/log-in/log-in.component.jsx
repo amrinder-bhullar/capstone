@@ -6,7 +6,7 @@ import FormInput from "../form-input/form-input.component";
 import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 import { useState, useContext } from "react";
 import { UserContext } from "../../contexts/user.context";
-import "./log-in.styles.scss";
+import { LogInContainer, H2, ButtonsContainer } from "./log-in.styles.jsx";
 import { logInWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 
 const defaultfomrfields = {
@@ -53,8 +53,8 @@ const LogIn = () => {
 
   // console.log(formfields);
   return (
-    <div className="log-in-container">
-      <h2>I already have an account</h2>
+    <LogInContainer>
+      <H2>I already have an account</H2>
       <span>Sign up with your email and password</span>
       <form onSubmit={handleSubmit}>
         <FormInput
@@ -73,7 +73,7 @@ const LogIn = () => {
           onChange={handleChange}
           value={password}
         />
-        <div className="buttons-container">
+        <ButtonsContainer>
           <Button type="submit">Sign In</Button>
           <Button
             type="button"
@@ -82,9 +82,9 @@ const LogIn = () => {
           >
             Google Sign IN
           </Button>
-        </div>
+        </ButtonsContainer>
       </form>
-    </div>
+    </LogInContainer>
   );
 };
 
