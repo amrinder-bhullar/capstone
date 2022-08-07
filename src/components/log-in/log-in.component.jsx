@@ -8,6 +8,7 @@ import { useState, useContext } from "react";
 import { UserContext } from "../../contexts/user.context";
 import { LogInContainer, H2, ButtonsContainer } from "./log-in.styles.jsx";
 import { logInWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
+import { useNavigate } from "react-router-dom";
 
 const defaultfomrfields = {
   email: "",
@@ -23,8 +24,11 @@ const LogIn = () => {
     setformfields({ ...formfields, [name]: value });
   };
 
+  const navigate = useNavigate();
+
   const logGoogleUser = async () => {
     await signInWithGooglePopup();
+    navigate("/");
   };
 
   const handleSubmit = async (event) => {
@@ -33,6 +37,7 @@ const LogIn = () => {
     try {
       const { user } = await logInWithEmailAndPassword(email, password);
       resetformfields();
+      navigate("/");
     } catch (err) {
       switch (err.code) {
         case "auth/wrong-password":

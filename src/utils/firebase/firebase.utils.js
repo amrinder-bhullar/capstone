@@ -105,7 +105,6 @@ export const createUserDocumentFromAuth = async (
       console.log(" error creating the user", error.message);
     }
   }
-
   return userDocRef;
 
   //if user data exists
