@@ -1,9 +1,11 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useReducer } from "react";
 import App from "../App";
 import {
   createUserDocumentFromAuth,
   onAuthStateChangedListerner,
 } from "../utils/firebase/firebase.utils";
+
+import { createAction } from "../utils/reducer/reducer.utils";
 
 // as the actual value you want to access
 export const UserContext = createContext({
@@ -11,8 +13,37 @@ export const UserContext = createContext({
   setCurrentUser: () => null,
 });
 
+export const USER_ACTION_TYPES = {
+  SET_CURRENT_USER: "SET_CURRENT_USER",
+};
+
+const userReducer = (state, action) => {
+  // console.log(action);
+  const { type, payload } = action;
+
+  switch (type) {
+    case USER_ACTION_TYPES.SET_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: payload,
+      };
+    default:
+      throw new Error(`Unhandled type ${type}` in userReducer);
+  }
+};
+
+const INITIAL_STATE = {
+  currentUser: null,
+};
+
 export const UserProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
+  // const [currentUser, setCurrentUser] = useState(null);
+  const [{ currentUser }, dispatch] = useReducer(userReducer, INITIAL_STATE);
+
+  const setCurrentUser = (user) => {
+    dispatch(createAction(USER_ACTION_TYPES.SET_CURRENT_USER, user));
+  };
+
   const value = { currentUser, setCurrentUser };
 
   useEffect(() => {
@@ -33,3 +64,5 @@ export const UserProvider = ({ children }) => {
 // Wherever you use context hook when the value changes it will re-run those functions again if you have 100s of function hooked into a context value it means they will run again causing performence problem.
 
 // Observer Pattern it is a software design pattern in which when an event fires it calls a callback meaning what will happen next if you subscribe to chain of events but some events have already been fired you cannot observe them as they are in the past but you can observe the next one. for example when you click and you have defined onClick do run function1, fun2, fun3. It has more params like error, you can have an error callback, on complete callback.
+
+//
